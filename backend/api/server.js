@@ -2,8 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const bodyparser = require('body-parser');
-const connectDB = require('./db/db.js');
-const Password = require('./models/password.js');
+const connectDB = require('../db/db.js');
+const Password = require('../models/password.js');
 
 dotenv.config();
 
@@ -11,10 +11,26 @@ dotenv.config();
 connectDB();
 
 const app = express();
-const port = 3000;
+// const port = 3000;
+
+
+const allowedOrigins = [
+  "http://localhost:5173",
+   "https://passopfront.vercel.app"
+];
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("CORS NOT ALLOWED"));
+  },
+  credentials: true
+}));
+
+
 app.use(bodyparser.json());
 
 
@@ -64,7 +80,9 @@ app.put('/:id', async (req, res) => {
 });
 
 
+module.exports = app;
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+
+// app.listen(port, () => {
+//   console.log(`Server running at http://localhost:${port}`);
+// });

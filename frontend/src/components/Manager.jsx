@@ -20,7 +20,7 @@ const Manager = () => {
 
     const getPasswords = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/");
+            const res = await axios.get("https://passopbackend-beta.vercel.app");
             setpasswordArray(res.data);
         } catch (error) {
             console.log("Error fetching passwords", error);
@@ -77,7 +77,7 @@ const savePassword = async () => {
 
             // If editing
             if (form._id) {
-                res = await axios.put(`http://localhost:3000/${form._id}`, form);
+                res = await axios.put(`https://passopbackend-beta.vercel.app/${form._id}`, form);
 
                 // Replace updated password in UI
                 const updatedArray = passwordArray.map(item =>
@@ -90,7 +90,7 @@ const savePassword = async () => {
 
             // If adding new
             else {
-                res = await axios.post("http://localhost:3000/", form);
+                res = await axios.post("https://passopbackend-beta.vercel.app", form);
                 setpasswordArray([...passwordArray, res.data.result]);
                 toast("Password Saved!", { theme: "dark" });
             }
@@ -116,7 +116,7 @@ const savePassword = async () => {
     if (!confirmDelete) return;
 
     try {
-        await axios.delete(`http://localhost:3000/${_id}`);
+        await axios.delete(`https://passopbackend-beta.vercel.app/${_id}`);
 
         setpasswordArray(passwordArray.filter(item => item._id !== _id));
 
